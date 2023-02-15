@@ -36,6 +36,9 @@
     "plugins/source/stripe": { "component": "plugins-source-stripe" },
     "plugins/source/mixpanel": { "component": "plugins-source-mixpanel" },
     "plugins/source/postgresql": { "component": "plugins-source-postgresql" },
+    "plugins/source/google-analytics": {
+      "component": "plugins-source-google-analytics"
+    },
     "plugins/destination/postgresql": {
       "component": "plugins-destination-postgresql"
     },

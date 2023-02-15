@@ -92,6 +92,8 @@ firehose:
   - plugins/destination/firehose/**/*  
 clickhouse:
   - plugins/destination/clickhouse/**/*
+google-analytics:
+  - plugins/destination/google-analytics/**/*
 website:
   - website/**/*
 cli:
