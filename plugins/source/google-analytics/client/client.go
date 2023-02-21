@@ -18,11 +18,11 @@ type Client struct {
 	spec *Spec
 
 	// Fields set by multiplexers
-	Account     *analytics.Account
-	WebProperty *analytics.Webproperty
+	Account     *AccountInfo
+	WebProperty *WebProperty
+	Profile     *analytics.Profile
 
-	current  *accountInfo
-	accounts []*accountInfo
+	accounts []*AccountInfo
 
 	clientOptions []option.ClientOption
 	callOptions   []googleapi.CallOption

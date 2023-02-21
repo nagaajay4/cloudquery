@@ -2,6 +2,11 @@
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on google_analytics_accounts:
+  - [google_analytics_web_properties](google_analytics_web_properties.md)
+
 ## Columns
 
 | Name          | Type          |

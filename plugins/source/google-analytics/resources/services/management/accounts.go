@@ -15,10 +15,12 @@ func Accounts() *schema.Table {
 		Transform: transformers.TransformWithStruct(new(analytics.Account), transformers.WithPrimaryKeys("Id")),
 		Multiplex: client.AccountMX,
 		Resolver:  resolveAccount,
+		Relations: schema.Tables{webProperties()},
 	}
 }
 
 func resolveAccount(_ context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	res <- meta.(*client.Client).Account
+	meta.(*client.Client).Management.AccountSummaries.List()
 	return nil
 }

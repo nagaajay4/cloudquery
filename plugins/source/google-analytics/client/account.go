@@ -8,14 +8,20 @@ import (
 	"google.golang.org/api/analytics/v3"
 )
 
-type accountInfo struct {
-	account       *analytics.Account
-	webProperties []*analytics.Webproperty
-}
+type (
+	AccountInfo struct {
+		*analytics.Account
+		WebProperties []*WebProperty
+	}
+	WebProperty struct {
+		*analytics.Webproperty
+		Profiles []*analytics.Profile
+	}
+)
 
 func (c *Client) initAccounts(ctx context.Context, ids []string) error {
 	eg, ctx := errgroup.WithContext(ctx)
-	var accs []*accountInfo
+	var accs []*AccountInfo
 
 	req := c.Service.Management.Accounts.List().Context(ctx)
 	for {
@@ -26,7 +32,7 @@ func (c *Client) initAccounts(ctx context.Context, ids []string) error {
 
 		for _, a := range resp.Items {
 			if len(ids) == 0 || slices.Contains(ids, a.Id) {
-				info := &accountInfo{account: a}
+				info := &AccountInfo{Account: a}
 				accs = append(accs, info)
 				eg.Go(func() error { return c.initAccountInfo(ctx, info) })
 			}
@@ -43,17 +49,47 @@ func (c *Client) initAccounts(ctx context.Context, ids []string) error {
 	return eg.Wait()
 }
 
-func (c *Client) initAccountInfo(ctx context.Context, ai *accountInfo) error {
-	ai.webProperties = nil
+func (c *Client) initAccountInfo(ctx context.Context, ai *AccountInfo) error {
+	eg, ctx := errgroup.WithContext(ctx)
+	ai.WebProperties = nil
 
-	req := c.Service.Management.Webproperties.List(ai.account.Id).Context(ctx)
+	req := c.Service.Management.Webproperties.List(ai.Account.Id).Context(ctx)
 	for {
 		resp, err := req.Do(c.callOptions...)
 		if err != nil {
 			return err
 		}
 
-		ai.webProperties = append(ai.webProperties, resp.Items...)
+		for _, p := range resp.Items {
+			property := &WebProperty{Webproperty: p}
+			eg.Go(func() error {
+				return c.initProfiles(ctx, property)
+			})
+			ai.WebProperties = append(ai.WebProperties, property)
+		}
+
+		if resp.NextLink == "" {
+			break
+		}
+
+		// analytics pkg isn't compatible with iterator pkg, so we use offset instead
+		req.StartIndex(resp.StartIndex + int64(len(resp.Items)))
+	}
+
+	return eg.Wait()
+}
+
+func (c *Client) initProfiles(ctx context.Context, wp *WebProperty) error {
+	wp.Profiles = nil
+
+	req := c.Service.Management.Profiles.List(wp.AccountId, wp.Id).Context(ctx)
+	for {
+		resp, err := req.Do(c.callOptions...)
+		if err != nil {
+			return err
+		}
+
+		wp.Profiles = append(wp.Profiles, resp.Items...)
 
 		if resp.NextLink == "" {
 			break
