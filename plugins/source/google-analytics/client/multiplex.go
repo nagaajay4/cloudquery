@@ -11,6 +11,7 @@ func AccountMX(meta schema.ClientMeta) []schema.ClientMeta {
 	for _, acc := range c.accounts {
 		n := *c
 		n.Account = acc
+		n.logger = c.logger.With().Str("account", acc.Id).Logger()
 		n.WebProperty = nil
 		n.Profile = nil
 		res = append(res, &n)
@@ -26,6 +27,7 @@ func WebPropertyMX(meta schema.ClientMeta) []schema.ClientMeta {
 		for _, webProperty := range c.Account.WebProperties {
 			n := *c
 			n.WebProperty = webProperty
+			n.logger = c.logger.With().Str("web_property", webProperty.Id).Logger()
 			n.Profile = nil
 			res = append(res, &n)
 		}
@@ -42,6 +44,7 @@ func ProfileMX(meta schema.ClientMeta) []schema.ClientMeta {
 		for _, profile := range c.WebProperty.Profiles {
 			n := *c
 			n.Profile = profile
+			n.logger = c.logger.With().Str("profile", profile.Id).Logger()
 			res = append(res, &n)
 		}
 	}
