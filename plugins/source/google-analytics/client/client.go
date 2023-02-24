@@ -16,8 +16,8 @@ type Client struct {
 	*analyticsreporting.Service
 	backend.Backend
 
-	accountID string
-	profile   string
+	ViewID    string
+	StartDate string
 
 	logger zerolog.Logger
 }
@@ -29,12 +29,17 @@ func (c *Client) Logger() *zerolog.Logger {
 }
 
 func (c *Client) ID() string {
-	return "google-analytics:account:{" + c.accountID + "}:profile:{" + c.profile + "}"
+	return "google-analytics:view:{" + c.ViewID + "}"
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, srcSpec specs.Source, options source.Options) (schema.ClientMeta, error) {
-	var spec Spec
+	spec := new(Spec)
 	if err := srcSpec.UnmarshalSpec(&spec); err != nil {
+		return nil, err
+	}
+
+	spec.setDefaults()
+	if err := spec.validate(); err != nil {
 		return nil, err
 	}
 
@@ -57,9 +62,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, srcSpec specs.Source,
 	c := &Client{
 		Service:   svc,
 		Backend:   options.Backend,
-		accountID: "", //TODO
-		profile:   "", //TODO
-		logger:    logger.With().Str("plugin", "google-analytics").Logger(),
+		StartDate: spec.StartDate,
+		ViewID:    spec.ViewID,
+		logger:    logger.With().Str("plugin", "google-analytics").Str("view", spec.ViewID).Logger(),
 	}
 
 	return c, nil
