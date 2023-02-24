@@ -6,6 +6,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [16.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.2.0...plugins-source-aws-v16.0.0) (2023-02-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* **aws:** Rename `aws_organization_resource_policies` to `aws_organizations_resource_policies` ([#8321](https://github.com/cloudquery/cloudquery/issues/8321))
+
+### Features
+
+* **aws:** Add Support for CloudTrail Events With Incremental Table support ([#8333](https://github.com/cloudquery/cloudquery/issues/8333)) ([a90b95c](https://github.com/cloudquery/cloudquery/commit/a90b95c809f648730b453d9b8a672a0eb5e8eb68))
+* **aws:** Add Support for syncing Delegated Administrators ([#8342](https://github.com/cloudquery/cloudquery/issues/8342)) ([7c1dc40](https://github.com/cloudquery/cloudquery/commit/7c1dc40bc07a2b8211ca2e884748e45ffc7a6f0b))
+* **aws:** Support for Org Policies, Organizational Units and Roots ([#8134](https://github.com/cloudquery/cloudquery/issues/8134)) ([7cf277e](https://github.com/cloudquery/cloudquery/commit/7cf277e837f88bea6622fadc9d7f682a5030d6d6))
+
+
+### Bug Fixes
+
+* **aws:** EC2 Image Duplicate Records ([#8434](https://github.com/cloudquery/cloudquery/issues/8434)) ([e4e1599](https://github.com/cloudquery/cloudquery/commit/e4e15990dd9fab116cf9d0d28f538fa4f22ca57e))
+* **aws:** Rename `aws_organization_resource_policies` to `aws_organizations_resource_policies` ([#8321](https://github.com/cloudquery/cloudquery/issues/8321)) ([8896a57](https://github.com/cloudquery/cloudquery/commit/8896a57997e20a558af6b26b0e2342ace676728a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.0 ([#8344](https://github.com/cloudquery/cloudquery/issues/8344)) ([9c57544](https://github.com/cloudquery/cloudquery/commit/9c57544d06f9a774adcc659bcabd2518a905bdaa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.39.1 ([#8371](https://github.com/cloudquery/cloudquery/issues/8371)) ([e3274c1](https://github.com/cloudquery/cloudquery/commit/e3274c109739bc107387627d340a713470c3a3c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk to v1.40.0 ([#8401](https://github.com/cloudquery/cloudquery/issues/8401)) ([4cf36d6](https://github.com/cloudquery/cloudquery/commit/4cf36d68684f37c0407332930766c1ba60807a93))
+
 ## [15.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v15.1.0...plugins-source-aws-v15.2.0) (2023-02-21)
 
 
